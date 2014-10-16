@@ -23,7 +23,8 @@ var TicketcategorySchema = new Schema({
     /*Added this*/
     tickets: [{
         type: Schema.ObjectId,
-        ref: 'Ticket'
+        ref: 'Ticket',
+        required: 'Ticket add'
     }],
     user: {
         type: Schema.ObjectId,

@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p class="input-group">
-                        <label class="control-label" for="name">Due date</label>
+                            <label class="control-label" for="name">Due date</label>
                             <input type="text" name="due" ng-model="due" id="due" class="form-control" datepicker-popup="{{format}}" is-open="opened" min-date="minDate" max-date="'2017-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <select ng-model="ticketcategory">
-                    <option ng-repeat="ticketcategory in ticketcategories">{{ticketcategory._id}}</option>
+                    <option ng-repeat="ticketcategory in ticketcategories" value="{{ticketcategory._id}}">{{ticketcategory.name}}</option>
                 </select>
                 <div class="form-group">
                     <label class="control-label" for="description">Ticket Description</label>

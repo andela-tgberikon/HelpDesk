@@ -14,8 +14,9 @@ module.exports = function(app) {
 		.put(users.requiresLogin, tickets.hasAuthorization, tickets.update)
 		.delete(users.requiresLogin, tickets.hasAuthorization, tickets.delete);
 
-	app.route('/tickets/:ticketId/comment')
-		.put(users.requiresLogin, tickets.hasAuthorization, tickets.addComment);
+	app.route('/tickets/:ticketId/comments')
+		.post(users.requiresLogin, tickets.addComment)
+		.get(tickets.viewComments);
 
 	app.route('/tickets/category/:category')
 		.get(tickets.getByCategory);

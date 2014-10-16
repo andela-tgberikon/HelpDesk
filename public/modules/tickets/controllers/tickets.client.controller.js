@@ -1,10 +1,11 @@
 'use strict';
 
 // Tickets controller
-angular.module('tickets').controller('TicketsController', ['$scope',  '$stateParams', '$location', 'Authentication', 'TicketsByCategory','Tickets', 'Ticketcategories',
-    function($scope, $stateParams, $location, Authentication, TicketsByCategory, Tickets, Ticketcategories) {
+angular.module('tickets').controller('TicketsController', ['$scope', '$stateParams', '$location', 'Authentication', 'TicketsByCategory', 'Tickets', 'Ticketcategories', 'Ticketcomments',
+    function($scope, $stateParams, $location, Authentication, TicketsByCategory, Tickets, Ticketcategories, Ticketcomments) {
         $scope.authentication = Authentication;
         $scope.ticketcategories = Ticketcategories.query();
+        $scope.ticketcategory = $scope.ticketcategories[0];
         console.log($scope.ticketcategories);
         // Create new Ticket
         $scope.create = function() {
@@ -16,7 +17,9 @@ angular.module('tickets').controller('TicketsController', ['$scope',  '$statePar
             });
 
             // Redirect after save
-            ticket.$save({ticketCategoryId:$scope.ticketcategory}, function(response) {
+            ticket.$save({
+                ticketCategoryId: $scope.ticketcategory
+            }, function(response) {
                 $location.path('tickets/' + response._id);
 
                 // Clear form fields
@@ -25,10 +28,28 @@ angular.module('tickets').controller('TicketsController', ['$scope',  '$statePar
                 $scope.error = errorResponse.data.message;
             });
         };
+
+        // Post comment on Ticket
+        $scope.postComment = function (){
+            // Create new Comment Object
+            var comment = new Ticketcomments({
+                comment: this.ticketcomment
+            });
+            comment.$save({ticketId: $stateParams.ticketId}, function(resp){
+                $scope.comments.push(resp);
+            });
+
+            console.log('your comment  ' + comment);
+            $scope.ticketcomment = '';
+        };
+
+
         // Remove existing Ticket
         $scope.remove = function(ticket) {
             if (ticket) {
-                ticket.$remove();
+                ticket.$remove({
+                    ticketId:ticket.data._id
+                });
 
                 for (var i in $scope.tickets) {
                     if ($scope.tickets[i] === ticket) {
@@ -37,7 +58,7 @@ angular.module('tickets').controller('TicketsController', ['$scope',  '$statePar
                 }
             } else {
                 $scope.ticket.$remove(function() {
-                    $location.path('tickets');
+                    $location.path('tickets/' );
                 });
             }
         };
@@ -74,7 +95,9 @@ angular.module('tickets').controller('TicketsController', ['$scope',  '$statePar
             // for(var i = 0; i < $scope.ticket.data.length; i++){
             //     console.log($scope.ticket.data);
             // }
-            // $scope.comment = $scope.ticket.comment[i]
+            $scope.comments = Ticketcomments.query({
+                ticketId: $stateParams.ticketId
+            });
             console.log($scope.ticket);
         };
 
@@ -82,7 +105,7 @@ angular.module('tickets').controller('TicketsController', ['$scope',  '$statePar
 
 
         /**********************************************************/
-        /*						DATE PICKER STUFF				  */
+        /*                      DATE PICKER STUFF                 */
         /**********************************************************/
 
         $scope.today = function() {

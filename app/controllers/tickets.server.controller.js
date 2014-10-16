@@ -58,6 +58,7 @@ exports.getByUserId = function(req, res) {
 exports.addComment = function(req, res) {
     var comment = new Ticketcomment(req.body);
     comment.user = req.user;
+    comment.ticket = req.ticket;
     req.ticket.ticketcomment.push(comment);
     console.log(comment.content);
     comment.save(function(err) {
@@ -73,7 +74,9 @@ exports.addComment = function(req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            res.jsonp(comment);
+            comment.populate('user', function(err, comment) {
+                res.jsonp(comment);
+            });
         }
     });
 };
@@ -83,6 +86,19 @@ exports.getByCategory = function(req, res) {
         .populate('user', 'displayName')
         .exec(function(err, category) {
             console.log(category);
+        });
+};
+
+
+exports.viewComments = function(req, res) {
+    Ticketcomment.find({
+            ticket: req.ticket._id
+        }).sort('created')
+        .populate('user', 'displayName')
+        .exec(function(err, ticketcomment) {
+            if (!err) {
+                res.jsonp(ticketcomment);
+            }
         });
 };
 /*************************************************************?
@@ -120,7 +136,7 @@ exports.update = function(req, res) {
 };
 
 /**
- * Delete an Ticket
+ * Delete a Ticket
  */
 exports.delete = function(req, res) {
     var ticket = req.ticket;
@@ -163,6 +179,7 @@ exports.list = function(req, res) {
 exports.ticketByID = function(req, res, next, id) {
     Ticket.findById(id).populate('user', 'displayName')
         .populate('ticketcomment')
+        .populate('ticketcomment.user.name')
         .populate('ticketcategory', 'name')
         .exec(function(err, ticket) {
             if (err) return next(err);
@@ -171,6 +188,7 @@ exports.ticketByID = function(req, res, next, id) {
             next();
         });
 };
+
 
 /**
  * Ticket authorization middleware

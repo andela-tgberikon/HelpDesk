@@ -1,12 +1,12 @@
 <section data-ng-controller="TicketsController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="ticket.name"></h1>
+		<h1 data-ng-bind="ticket.data.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="authentication.user._id == ticket.user._id">
+	<div class="pull-right" data-ng-show="authentication.user._id == ticket.data.user._id">
 		<a class="btn btn-primary" href="/#!/tickets/{{ticket._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
+		<a class="btn btn-primary" data-ng-click="remove()">
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
@@ -17,9 +17,17 @@
 			by
 			<br><span data-ng-bind="ticket.data.user.displayName"></span>
 			<br>{{ticket.data.ticketcategory.name}}
-			<br>{{ticket.data.ticketcomment}}
-			<br>{{ticket.data.description}}
+						<br>{{ticket.data.description}}
 			<br>{{ticket.data.due | date:'mediumDate'}}
+			<br>Comments
+				<div ng-repeat="comment in comments">
+					<p>{{comment.comment}}
+					<p>Posted by: {{comment.user.displayName}}
+					<p>{{comment.created | date:'mediumDate'}}
+				</div>
+
 		</em>
 	</small>
+	<br><textarea ng-model="ticketcomment"></textarea>
+	<br><button class="btn btn-success" ng-click="postComment()">Post Comment</button>
 </section>
