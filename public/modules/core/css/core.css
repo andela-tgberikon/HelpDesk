@@ -20,12 +20,11 @@
 
 .header{
 	position:fixed;
+	
 }
+
 .button{
 	color:white;
 	height: 20px;
 	margin-top: 10px;
-}
-.li{
-	display: block;
 }

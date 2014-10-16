@@ -71,6 +71,10 @@ angular.module('tickets').controller('TicketsController', ['$scope',  '$statePar
             $scope.ticket = Tickets.get({
                 ticketId: $stateParams.ticketId
             });
+            // for(var i = 0; i < $scope.ticket.data.length; i++){
+            //     console.log($scope.ticket.data);
+            // }
+            // $scope.comment = $scope.ticket.comment[i]
             console.log($scope.ticket);
         };
 
