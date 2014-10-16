@@ -1,65 +1,67 @@
 'use strict';
 
 // Ticketcategories controller
-angular.module('ticketcategories').controller('TicketcategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Ticketcategories',
-	function($scope, $stateParams, $location, Authentication, Ticketcategories ) {
-		$scope.authentication = Authentication;
+angular.module('ticketcategories').controller('TicketcategoriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Ticketcategories', 'Tickets',
+    function($scope, $stateParams, $location, Authentication, Ticketcategories, Tickets) {
+        $scope.authentication = Authentication;
 
-		// Create new Ticketcategory
-		$scope.create = function() {
-			// Create new Ticketcategory object
-			var ticketcategory = new Ticketcategories ({
-				name: this.name
-			});
+        // Create new Ticketcategory
+        $scope.create = function() {
+            // Create new Ticketcategory object
+            var ticketcategory = new Ticketcategories({
+                name: this.name
+            });
 
-			// Redirect after save
-			ticketcategory.$save(function(response) {
-				$location.path('ticketcategories/' + response._id);
+            // Redirect after save
+            ticketcategory.$save(function(response) {
+                $location.path('ticketcategories/' + response._id);
 
-				// Clear form fields
-				$scope.name = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+                // Clear form fields
+                $scope.name = '';
+            }, function(errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
 
-		// Remove existing Ticketcategory
-		$scope.remove = function( ticketcategory ) {
-			if ( ticketcategory ) { ticketcategory.$remove();
 
-				for (var i in $scope.ticketcategories ) {
-					if ($scope.ticketcategories [i] === ticketcategory ) {
-						$scope.ticketcategories.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.ticketcategory.$remove(function() {
-					$location.path('ticketcategories');
-				});
-			}
-		};
+        // Remove existing Ticketcategory
+        $scope.remove = function(ticketcategory) {
+            if (ticketcategory) {
+                ticketcategory.$remove();
 
-		// Update existing Ticketcategory
-		$scope.update = function() {
-			var ticketcategory = $scope.ticketcategory ;
+                for (var i in $scope.ticketcategories) {
+                    if ($scope.ticketcategories[i] === ticketcategory) {
+                        $scope.ticketcategories.splice(i, 1);
+                    }
+                }
+            } else {
+                $scope.ticketcategory.$remove(function() {
+                    $location.path('ticketcategories');
+                });
+            }
+        };
 
-			ticketcategory.$update(function() {
-				$location.path('ticketcategories/' + ticketcategory._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+        // Update existing Ticketcategory
+        $scope.update = function() {
+            var ticketcategory = $scope.ticketcategory;
 
-		// Find a list of Ticketcategories
-		$scope.find = function() {
-			$scope.ticketcategories = Ticketcategories.query();
-		};
+            ticketcategory.$update(function() {
+                $location.path('ticketcategories/' + ticketcategory._id);
+            }, function(errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
 
-		// Find existing Ticketcategory
-		$scope.findOne = function() {
-			$scope.ticketcategory = Ticketcategories.get({ 
-				ticketcategoryId: $stateParams.ticketcategoryId
-			});
-		};
-	}
+        // Find a list of Ticketcategories
+        $scope.find = function() {
+            $scope.ticketcategories = Ticketcategories.query();
+        };
+
+        // Find existing Ticketcategory
+        $scope.findOne = function() {
+            $scope.ticketcategory = Ticketcategories.get({
+                ticketcategoryId: $stateParams.ticketcategoryId
+            });
+        };
+    }
 ]);

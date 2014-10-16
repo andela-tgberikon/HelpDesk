@@ -17,7 +17,6 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
     var ticket = new Ticket(req.body);
     ticket.user = req.user;
-
     ticket.save(function(err) {
         if (err) {
             return res.status(400).send({
@@ -57,26 +56,18 @@ exports.getByUserId = function(req, res) {
 
 
 exports.addComment = function(req, res) {
-    // console.log(req.ticket);
-    // console.log(req.body);
-    // console.log(req);
-
     var comment = new Ticketcomment(req.body);
-
-    // console.log(comment);
-        comment.user = req.user;
-        // comment.ticket = req.ticket;
-
-        req.ticket.ticketcomment.push(comment);
-        console.log(comment.content);
-        comment.save(function(err) {
+    comment.user = req.user;
+    req.ticket.ticketcomment.push(comment);
+    console.log(comment.content);
+    comment.save(function(err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
-        } 
+        }
     });
-        req.ticket.save(function(err) {
+    req.ticket.save(function(err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -87,10 +78,10 @@ exports.addComment = function(req, res) {
     });
 };
 
-exports.getByCategory = function(req, res){
+exports.getByCategory = function(req, res) {
     Ticket.find().sort('-category')
         .populate('user', 'displayName')
-        .exec(function(err, category){
+        .exec(function(err, category) {
             console.log(category);
         });
 };
@@ -101,13 +92,11 @@ exports.getByCategory = function(req, res){
  * Show the current Ticket
  */
 exports.read = function(req, res) {
-    var response = [{
-                    number_of_comments: req.ticket.ticketcomment.length,
-                    data: req.ticket
-                }];
-                res.jsonp(response);
-    // res.jsonp(req.ticket);
-    // console.log(req.ticket.ticketcomment.length);
+    var response = {
+        number_of_comments: req.ticket.ticketcomment.length,
+        data: req.ticket
+    };
+    res.jsonp(response);
 };
 
 
@@ -135,7 +124,6 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
     var ticket = req.ticket;
-
     ticket.remove(function(err) {
         if (err) {
             return res.status(400).send({
@@ -155,7 +143,6 @@ exports.list = function(req, res) {
         .populate('user', 'displayName')
         .populate('ticketcategory', 'name')
         .exec(function(err, tickets) {
-            // console.log(req);
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -168,11 +155,6 @@ exports.list = function(req, res) {
                 res.jsonp(response);
             }
         });
-    // Ticketstatus.find()
-    //     .populate('user')
-    //     .exec(function(err, Ticketstatuses){
-    //         console.log(Ticketstatuses);
-    //     });
 };
 
 /**
@@ -180,14 +162,14 @@ exports.list = function(req, res) {
  */
 exports.ticketByID = function(req, res, next, id) {
     Ticket.findById(id).populate('user', 'displayName')
-    .populate('ticketcomment')
-    .populate('ticketcategory', 'name')
-    .exec(function(err, ticket) {
-        if (err) return next(err);
-        if (!ticket) return next(new Error('Failed to load Ticket ' + id));
-        req.ticket = ticket;
-        next();
-    });
+        .populate('ticketcomment')
+        .populate('ticketcategory', 'name')
+        .exec(function(err, ticket) {
+            if (err) return next(err);
+            if (!ticket) return next(new Error('Failed to load Ticket ' + id));
+            req.ticket = ticket;
+            next();
+        });
 };
 
 /**

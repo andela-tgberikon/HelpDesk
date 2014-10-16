@@ -36,19 +36,16 @@ var TicketSchema = new Schema({
 	},
 	ticketcomment:[{
 			type: Schema.ObjectId,
-			ref: 'Ticketcomment',
-			ticketcomment:[{
-					type: Schema.ObjectId,
-					ref: 'Ticketcomment'
-			}]
+			ref: 'Ticketcomment'
 		}],
-	Ticketstatus:{
-			type: Schema.ObjectId,
-			ref: 'Ticketstatus'
-		},
+	status: {
+		type: String, 
+		enum: ['Open', 'Closed']
+	},
 	ticketcategory:{
 			type: Schema.ObjectId,
-			ref: 'Ticketcategory'
+			ref: 'Ticketcategory',
+			required: 'Please select a category'
 		}
 });
 

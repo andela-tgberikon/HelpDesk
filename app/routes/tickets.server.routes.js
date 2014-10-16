@@ -6,8 +6,8 @@ module.exports = function(app) {
 
 	// Tickets Routes
 	app.route('/tickets')
-		.get(tickets.list)
-		.post(users.requiresLogin, tickets.create);
+		.get(tickets.list);
+		
 
 	app.route('/tickets/:ticketId')
 		.get(tickets.read)

@@ -114,7 +114,9 @@ exports.list = function(req, res) {
  * Ticketcategory middleware
  */
 exports.ticketcategoryByID = function(req, res, next, id) {
-    Ticketcategory.findById(id).populate('user', 'displayName').exec(function(err, ticketcategory) {
+    Ticketcategory.findById(id).populate('user', 'displayName')
+    .populate('tickets')
+    .exec(function(err, ticketcategory) {
         if (err) return next(err);
         if (!ticketcategory) return next(new Error('Failed to load Ticketcategory ' + id));
         req.ticketcategory = ticketcategory;

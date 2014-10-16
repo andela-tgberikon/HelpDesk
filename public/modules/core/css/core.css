@@ -13,3 +13,19 @@
 .ng-valid.ng-dirty{
     border-color:#78FA89;
 }
+
+/**********************************/
+/*			CUSTOM CSS	   		  */
+/**********************************/
+
+.header{
+	position:fixed;
+}
+.button{
+	color:white;
+	height: 20px;
+	margin-top: 10px;
+}
+.li{
+	display: block;
+}
