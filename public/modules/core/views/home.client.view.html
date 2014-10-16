@@ -1,0 +1,12 @@
+<section ng-controller="TicketsController" data-ng-init="find()">
+
+    <p>Total Number of Tickets within the system: {{tickets.length}}</p>
+    Recent Tickets:
+    <p ng-repeat="recentTicket in recentTickets" ng-href="#!/tickets/{{recentTicket._id}}">
+        	Requested by: {{recentTicket.user.displayName}}
+        <br>Ticket Name: {{recentTicket.name}}
+        <br>Ticket created on: {{recentTicket.created}}
+        <br>Ticket due date: {{recentTicket.due}}
+        <br>Ticket Category: {{recentTicket.ticketcategory.name}}
+    </p>
+</section>
