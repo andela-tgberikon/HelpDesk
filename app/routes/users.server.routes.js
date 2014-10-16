@@ -13,6 +13,9 @@ module.exports = function(app) {
 	// Setting up the users profile api
 	app.route('/users/me').get(users.me);
 	app.route('/users').put(users.update);
+
+	app.route('/users/allusers').get(users.list);
+
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
 
 	app.route('/users/:userId/tickets')

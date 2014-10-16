@@ -9,6 +9,22 @@ var _ = require('lodash'),
 	passport = require('passport'),
 	User = mongoose.model('User');
 
+/*Trying to get all users in the database */
+// ONLY ADMIN
+exports.list = function(req, res){
+	User.find().sort('-created').populate('user').exec(function(err, users) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                
+                console.log(res);
+            }
+        });
+};
+
+
 /**
  * Update user details
  */

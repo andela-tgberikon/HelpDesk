@@ -13,9 +13,13 @@
 	<small>
 		<em class="text-muted">
 			Posted on
-			<span data-ng-bind="ticket.created | date:'mediumDate'"></span>
+			<br><span data-ng-bind="ticket.data.created | date:'mediumDate'"></span>
 			by
-			<span data-ng-bind="ticket.user.displayName"></span>
+			<br><span data-ng-bind="ticket.data.user.displayName"></span>
+			<br>{{ticket.data.ticketcategory.name}}
+			<br>{{ticket.data.ticketcomment.name}}
+			<br>{{ticket.data.description}}
+			<br>{{ticket.data.due | date:'mediumDate'}}
 		</em>
 	</small>
 </section>
