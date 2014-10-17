@@ -5,8 +5,7 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
     function($scope, $stateParams, $location, Authentication, TicketsByCategory, Tickets, Ticketcategories, Ticketcomments) {
         $scope.authentication = Authentication;
         $scope.ticketcategories = Ticketcategories.query();
-        $scope.ticketcategory = $scope.ticketcategories[0];
-        console.log($scope.ticketcategories);
+
         // Create new Ticket
         $scope.create = function() {
             // Create new Ticket object
@@ -15,13 +14,11 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
                 description: this.description,
                 due: this.due
             });
-
             // Redirect after save
             ticket.$save({
                 ticketCategoryId: $scope.ticketcategory
             }, function(response) {
                 $location.path('tickets/' + response._id);
-
                 // Clear form fields
                 $scope.name = '';
             }, function(errorResponse) {
@@ -38,8 +35,6 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
             comment.$save({ticketId: $stateParams.ticketId}, function(resp){
                 $scope.comments.push(resp);
             });
-
-            console.log('your comment  ' + comment);
             $scope.ticketcomment = '';
         };
 
@@ -50,7 +45,6 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
                 ticket.$remove({
                     ticketId:ticket.data._id
                 });
-
                 for (var i in $scope.tickets) {
                     if ($scope.tickets[i] === ticket) {
                         $scope.tickets.splice(i, 1);
@@ -66,9 +60,8 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
         // Update existing Ticket
         $scope.update = function() {
             var ticket = $scope.ticket;
-
             ticket.$update(function() {
-                $location.path('tickets/' + ticket._id);
+                $location.path('tickets/' + ticket.data._id);
             }, function(errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
@@ -82,7 +75,6 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
                 for (var i = 0; i < 5; i++) {
                     $scope.recentTickets.push(response[0].data[i]);
                 }
-                console.log($scope.recentTickets);
             });
         };
 
@@ -92,13 +84,9 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
             $scope.ticket = Tickets.get({
                 ticketId: $stateParams.ticketId
             });
-            // for(var i = 0; i < $scope.ticket.data.length; i++){
-            //     console.log($scope.ticket.data);
-            // }
             $scope.comments = Ticketcomments.query({
                 ticketId: $stateParams.ticketId
             });
-            console.log($scope.ticket);
         };
 
 

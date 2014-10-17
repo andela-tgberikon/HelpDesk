@@ -38,7 +38,6 @@ exports.create = function(req, res) {
 
 exports.getByUserId = function(req, res) {
     Ticket.where('user').equals(req.profile._id).exec(function(err, tickets) {
-        console.log(tickets);
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -82,10 +81,20 @@ exports.addComment = function(req, res) {
 };
 
 exports.getByCategory = function(req, res) {
-    Ticket.find().sort('-category')
+    Ticketcategory.find().sort('-category')
         .populate('user', 'displayName')
         .exec(function(err, category) {
-            console.log(category);
+            if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            var response = {
+                total_number_of_tickets: category.length,
+                data: category
+            };
+            res.jsonp(response);
+        }
         });
 };
 
