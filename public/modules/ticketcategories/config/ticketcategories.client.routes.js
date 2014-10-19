@@ -13,13 +13,8 @@ angular.module('ticketcategories').config(['$stateProvider',
 			url: '/ticketcategories/create',
 			templateUrl: 'modules/ticketcategories/views/create-ticketcategory.client.view.html'
 		}).
-<<<<<<< HEAD
-		state('viewTicketcategory', {
-			url: '/ticketcategories/:ticketcategoryId',
-=======
 		state('viewTicketsInCategory', {
 			url: '/ticketcategories/:ticketcategoryId/tickets',
->>>>>>> devMean
 			templateUrl: 'modules/ticketcategories/views/view-ticketcategory.client.view.html'
 		}).
 		state('editTicketcategory', {
