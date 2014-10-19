@@ -44,13 +44,6 @@ angular.element(document).ready(function() {
 'use strict';
 
 // Use Applicaion configuration module to register a new module
-<<<<<<< HEAD
-ApplicationConfiguration.registerModule('articles');
-'use strict';
-
-// Use Applicaion configuration module to register a new module
-=======
->>>>>>> devMean
 ApplicationConfiguration.registerModule('core');
 'use strict';
 
@@ -75,117 +68,6 @@ ApplicationConfiguration.registerModule('users');
 
 'use strict';
 
-<<<<<<< HEAD
-// Configuring the Articles module
-angular.module('articles').run(['Menus',
-	function(Menus) {
-		// Set top bar menu items
-		Menus.addMenuItem('topbar', 'Articles', 'articles', 'dropdown', '/articles(/create)?');
-		Menus.addSubMenuItem('topbar', 'articles', 'List Articles', 'articles');
-		Menus.addSubMenuItem('topbar', 'articles', 'New Article', 'articles/create');
-	}
-]);
-'use strict';
-
-// Setting up route
-angular.module('articles').config(['$stateProvider',
-	function($stateProvider) {
-		// Articles state routing
-		$stateProvider.
-		state('listArticles', {
-			url: '/articles',
-			templateUrl: 'modules/articles/views/list-articles.client.view.html'
-		}).
-		state('createArticle', {
-			url: '/articles/create',
-			templateUrl: 'modules/articles/views/create-article.client.view.html'
-		}).
-		state('viewArticle', {
-			url: '/articles/:articleId',
-			templateUrl: 'modules/articles/views/view-article.client.view.html'
-		}).
-		state('editArticle', {
-			url: '/articles/:articleId/edit',
-			templateUrl: 'modules/articles/views/edit-article.client.view.html'
-		});
-	}
-]);
-'use strict';
-
-angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles',
-	function($scope, $stateParams, $location, Authentication, Articles) {
-		$scope.authentication = Authentication;
-
-		$scope.create = function() {
-			var article = new Articles({
-				title: this.title,
-				content: this.content
-			});
-			article.$save(function(response) {
-				$location.path('articles/' + response._id);
-
-				$scope.title = '';
-				$scope.content = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		$scope.remove = function(article) {
-			if (article) {
-				article.$remove();
-
-				for (var i in $scope.articles) {
-					if ($scope.articles[i] === article) {
-						$scope.articles.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.article.$remove(function() {
-					$location.path('articles');
-				});
-			}
-		};
-
-		$scope.update = function() {
-			var article = $scope.article;
-
-			article.$update(function() {
-				$location.path('articles/' + article._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		$scope.find = function() {
-			$scope.articles = Articles.query();
-		};
-
-		$scope.findOne = function() {
-			$scope.article = Articles.get({
-				articleId: $stateParams.articleId
-			});
-		};
-	}
-]);
-'use strict';
-
-//Articles service used for communicating with the articles REST endpoints
-angular.module('articles').factory('Articles', ['$resource',
-	function($resource) {
-		return $resource('articles/:articleId', {
-			articleId: '@_id'
-		}, {
-			update: {
-				method: 'PUT'
-			}
-		});
-	}
-]);
-'use strict';
-
-=======
->>>>>>> devMean
 // Setting up route
 angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
@@ -395,8 +277,6 @@ angular.module('core').service('Menus', [
 ]);
 'use strict';
 
-<<<<<<< HEAD
-=======
 // Configuring the Articles module
 angular.module('tickets').run(['Menus',
 	function(Menus) {
@@ -408,7 +288,6 @@ angular.module('tickets').run(['Menus',
 ]);
 'use strict';
 
->>>>>>> devMean
 //Setting up route
 angular.module('ticketcategories').config(['$stateProvider',
 	function($stateProvider) {
@@ -422,13 +301,8 @@ angular.module('ticketcategories').config(['$stateProvider',
 			url: '/ticketcategories/create',
 			templateUrl: 'modules/ticketcategories/views/create-ticketcategory.client.view.html'
 		}).
-<<<<<<< HEAD
-		state('viewTicketcategory', {
-			url: '/ticketcategories/:ticketcategoryId',
-=======
 		state('viewTicketsInCategory', {
 			url: '/ticketcategories/:ticketcategoryId/tickets',
->>>>>>> devMean
 			templateUrl: 'modules/ticketcategories/views/view-ticketcategory.client.view.html'
 		}).
 		state('editTicketcategory', {
@@ -613,11 +487,7 @@ angular.module('ticketcomments').controller('TicketcommentsController', ['$scope
 //Ticketcomments service used to communicate Ticketcomments REST endpoints
 angular.module('ticketcomments').factory('Ticketcomments', ['$resource',
 	function($resource) {
-<<<<<<< HEAD
-		return $resource('ticketcomments/:ticketcommentId', { ticketcommentId: '@_id'
-=======
 		return $resource('tickets/:ticketId/comments/:commentId', { commentId: '@_id'
->>>>>>> devMean
 		}, {
 			update: {
 				method: 'PUT'
@@ -625,11 +495,8 @@ angular.module('ticketcomments').factory('Ticketcomments', ['$resource',
 		});
 	}
 ]);
-<<<<<<< HEAD
-=======
 
 
->>>>>>> devMean
 'use strict';
 
 // Configuring the Articles module
@@ -669,19 +536,11 @@ angular.module('tickets').config(['$stateProvider',
 'use strict';
 
 // Tickets controller
-<<<<<<< HEAD
-angular.module('tickets').controller('TicketsController', ['$scope',  '$stateParams', '$location', 'Authentication', 'TicketsByCategory','Tickets', 'Ticketcategories',
-    function($scope, $stateParams, $location, Authentication, TicketsByCategory, Tickets, Ticketcategories) {
-        $scope.authentication = Authentication;
-        $scope.ticketcategories = Ticketcategories.query();
-        console.log($scope.ticketcategories);
-=======
 angular.module('tickets').controller('TicketsController', ['$scope', '$stateParams', '$location', 'Authentication', 'TicketsByCategory', 'Tickets', 'Ticketcategories', 'Ticketcomments',
     function($scope, $stateParams, $location, Authentication, TicketsByCategory, Tickets, Ticketcategories, Ticketcomments) {
         $scope.authentication = Authentication;
         $scope.ticketcategories = Ticketcategories.query();
 
->>>>>>> devMean
         // Create new Ticket
         $scope.create = function() {
             // Create new Ticket object
@@ -690,32 +549,17 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
                 description: this.description,
                 due: this.due
             });
-<<<<<<< HEAD
-
-            // Redirect after save
-            ticket.$save({ticketCategoryId:$scope.ticketcategory}, function(response) {
-                $location.path('tickets/' + response._id);
-
-=======
             // Redirect after save
             ticket.$save({
                 ticketCategoryId: $scope.ticketcategory
             }, function(response) {
                 $location.path('tickets/' + response._id);
->>>>>>> devMean
                 // Clear form fields
                 $scope.name = '';
             }, function(errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
         };
-<<<<<<< HEAD
-        // Remove existing Ticket
-        $scope.remove = function(ticket) {
-            if (ticket) {
-                ticket.$remove();
-
-=======
 
         // Post comment on Ticket
         $scope.postComment = function (){
@@ -736,7 +580,6 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
                 ticket.$remove({
                     ticketId:ticket.data._id
                 });
->>>>>>> devMean
                 for (var i in $scope.tickets) {
                     if ($scope.tickets[i] === ticket) {
                         $scope.tickets.splice(i, 1);
@@ -744,11 +587,7 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
                 }
             } else {
                 $scope.ticket.$remove(function() {
-<<<<<<< HEAD
-                    $location.path('tickets');
-=======
                     $location.path('tickets/' );
->>>>>>> devMean
                 });
             }
         };
@@ -756,14 +595,8 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
         // Update existing Ticket
         $scope.update = function() {
             var ticket = $scope.ticket;
-<<<<<<< HEAD
-
-            ticket.$update(function() {
-                $location.path('tickets/' + ticket._id);
-=======
             ticket.$update(function() {
                 $location.path('tickets/' + ticket.data._id);
->>>>>>> devMean
             }, function(errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
@@ -777,10 +610,6 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
                 for (var i = 0; i < 5; i++) {
                     $scope.recentTickets.push(response[0].data[i]);
                 }
-<<<<<<< HEAD
-                console.log($scope.recentTickets);
-=======
->>>>>>> devMean
             });
         };
 
@@ -790,24 +619,16 @@ angular.module('tickets').controller('TicketsController', ['$scope', '$statePara
             $scope.ticket = Tickets.get({
                 ticketId: $stateParams.ticketId
             });
-<<<<<<< HEAD
-            console.log($scope.ticket);
-=======
             $scope.comments = Ticketcomments.query({
                 ticketId: $stateParams.ticketId
             });
->>>>>>> devMean
         };
 
 
 
 
         /**********************************************************/
-<<<<<<< HEAD
-        /*						DATE PICKER STUFF				  */
-=======
         /*                      DATE PICKER STUFF                 */
->>>>>>> devMean
         /**********************************************************/
 
         $scope.today = function() {
